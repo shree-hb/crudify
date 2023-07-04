@@ -5,7 +5,7 @@ module Crudify
     isolate_namespace Crudify
 
     # Load engine dependencies
-    # require "crudify/crud_controller"
+    require_relative "../tasks"
 
     require "active_support/dependencies"
 
