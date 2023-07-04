@@ -1,5 +1,5 @@
 class Crudify::CrudsController < ::ApplicationController
-  layout 'crudify_base'
+  layout 'crudify/crudify_base'
 
   before_action :init
 
