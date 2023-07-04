@@ -28,7 +28,6 @@ namespace :crudify do
   task :crudify_model, [:arg1, :arg2] do |t,args|
     model_attr =  Rack::Utils.parse_nested_query(args[:arg1])
     model = args[:arg2]
-    binding.pry
     model_file_path = "app/models/#{model.underscore}.rb"
     keyword = "has_"
     params = []
