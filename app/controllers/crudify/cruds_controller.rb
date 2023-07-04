@@ -1,10 +1,10 @@
 class Crudify::CrudsController < ::ApplicationController
-  layout 'crudify/content'
+  layout 'crudify_base'
 
   before_action :init
 
   def index 
-    @contents = @model_class.all rescue ::Department.all
+    @contents = @model_class.all rescue ::Recipe.all
   end
 
   def new
@@ -49,7 +49,7 @@ class Crudify::CrudsController < ::ApplicationController
   def init 
     @model = params[:model]
     parent_class = self.class.superclass
-    @model_class = parent_class.const_get(@model) rescue Department
+    @model_class = parent_class.const_get(@model) rescue Recipe
   end
 end 
 
