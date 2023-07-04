@@ -1,4 +1,4 @@
-module Crud
+module Crudify
   #class ApplicationController < ActionController::Base
   class CrudController < ::ApplicationController
     

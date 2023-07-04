@@ -1,0 +1,48 @@
+
+<style>
+  table, th, td {
+    border: 2px solid #F5F0F5;
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px; 
+  }
+</style>
+<br/>
+<%= link_to "Add new #{@contents.first.class}", new_crud_path(model: @contents.first.class) %>
+
+<% if @contents.present? %>
+  <div class="form-style-2-heading"><%= @contents.first.class.to_s.titleize %> Listing </div>
+
+
+<br/><br/>
+
+  <div style="overflow: hidden;width: 100%;">
+    <table class="table table-bordered" style="overflow-x: auto;width: 100%;margin: 0;">
+    <tbody>
+        <tr>
+          <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>    
+              <th style="background-color:#F5F0F5;"><%= ct.to_s.humanize.capitalize %></th>               
+            <%end%>
+          <th style="background-color:#F5F0F5;"> Action  </th>  
+        </tr>
+        <% @contents.each do |cont| %>       
+          <tr>           
+            <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>           
+              <td style="max-width: 200px;overflow: hidden; white-space: normal;text-overflow: ellipsis;">                        
+                <% if ct.match(/_id$/) %>              
+                  <% relational_model = ct.to_s.split(/_id$/)[0] %>
+                  <% relational_obj = cont.send(relational_model) %>
+                  <%= relational_obj.send(relational_obj.class.relational_display_col) %>
+                <%else%>
+                  <%= cont.send(ct) %>
+                <%end%>
+              </td>
+            <%end%>
+            <td><%= link_to "Edit",  edit_crud_path(cont, model: cont.class), query: {model: cont.class} %> </td>
+          </tr>
+    <% end %>
+    <tbody>
+    </table>
+</div>
+<% else %>
+  
+<% end %>

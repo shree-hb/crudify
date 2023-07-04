@@ -6,6 +6,7 @@ module Crudify
 
     # Load engine dependencies
     require "crudify/crud_controller"
+    
     require "active_support/dependencies"
 
     # # Mount engine routes
