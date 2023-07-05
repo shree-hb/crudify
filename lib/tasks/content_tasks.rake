@@ -25,9 +25,10 @@ namespace :crudify do
   end
 
   desc "Add code to mode to specify attributes required for CRUD interface"
-  task :crudify_model, [:arg1, :arg2] do |t,args|
+  task :crudify_model, [:arg1, :arg2, :arg3] do |t,args|
     model_attr =  Rack::Utils.parse_nested_query(args[:arg1])
     model = args[:arg2]
+    display_val = args[:arg3]
     model_file_path = "app/models/#{model.underscore}.rb"
     keyword = "has_"
     params = []
@@ -37,13 +38,15 @@ namespace :crudify do
     end
 
     code_block = <<-HEREDOC   
-# Content CRUDIFY Engine
+# Content CRUDIFY Engine 
   # Syntax  
   # crud_col_hash   filed_name: "<data-type>,<is_editable>"
   # <data-type> can be : 'txt' / 'enum'
   # <is_editable> can be : 1 for true i.e. field is Editable
   #                        0 for false i.e. field is NOT Editable          
   crud_col_hash #{params.join(', ')}
+
+  relational_display_col #{display_val.to_sym}
     HEREDOC
    
     contents = File.read(model_file_path)
