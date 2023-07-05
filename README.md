@@ -16,7 +16,16 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+Once gem is installed follow below steps
+
+In Routes.rb , Add below line
+   mount Crudify::Engine => "crudify"
+
+To Generate Initializer, run below rake
+   rake crudify:generate_initializer --trace
+
+To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
+   rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&country=enum,Department]"
 
 ## Development
 

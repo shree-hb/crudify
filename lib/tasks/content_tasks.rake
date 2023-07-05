@@ -4,10 +4,10 @@ namespace :crudify do
   task generate_initializer: :environment do
     
     initializer_content = <<~RUBY
-      require 'content/content_crud'
+      require 'crudify/content_crud'
 
       ActiveSupport.on_load(:active_record) do
-        include Content::ContentCrud
+        include Crudify::ContentCrud
       end
       
       Rails.application.config.content_engine = {
@@ -36,7 +36,7 @@ namespace :crudify do
       params << "#{f}: '#{v},1'"
     end
 
-    code_block = <<-HEREDOC    
+    code_block = <<-HEREDOC   
 # Content CRUDIFY Engine
   # Syntax  
   # crud_col_hash   filed_name: "<data-type>,<is_editable>"
@@ -66,7 +66,7 @@ namespace :crudify do
     end     
  
     File.write(model_file_path, modified_lines.join, encoding: "UTF-8")
-    puts "Check your model #{model}, content column code added"
+    puts "Check model #{model}, Crudify column code added"
   end
 
 end
