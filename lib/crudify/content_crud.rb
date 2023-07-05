@@ -1,4 +1,4 @@
-module Content
+module Crudify
   module ContentCrud
 
     def content_attr
@@ -20,4 +20,4 @@ module Content
   end
 end
 
-ActiveRecord::Base.extend Content::ContentCrud
+ActiveRecord::Base.extend Crudify::ContentCrud
