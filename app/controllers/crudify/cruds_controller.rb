@@ -49,7 +49,7 @@ class Crudify::CrudsController < ::ApplicationController
   def init 
     @model = params[:model]
     parent_class = self.class.superclass
-    @model_class = parent_class.const_get(@model) rescue Recipe
+    @model_class = parent_class.const_get(@model) rescue Department
   end
 end 
 
