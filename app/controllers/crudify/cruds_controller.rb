@@ -4,7 +4,7 @@ class Crudify::CrudsController < ::ApplicationController
   before_action :init
 
   def index 
-    @contents = @model_class.all rescue ::Recipe.all
+    @contents = @model_class.all rescue ::Department.all
   end
 
   def new
