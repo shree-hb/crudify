@@ -2,7 +2,7 @@
 <%= link_to 'Go Back to Content List', cruds_path(model: @content.class) %>
 
 <div class="form-style-2">
-  <%= form_with model: @content, url: crud_path,  method: :put do |f| %> 
+  <%= form_with model: @content, url: "/crudify/cruds/#{@content.id}",  method: :put do |f| %> 
     <%= render "form", content: @content, f: f %>
   <% end %>
 </div>

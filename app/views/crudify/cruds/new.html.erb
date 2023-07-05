@@ -3,7 +3,7 @@
 
 
 <div class="form-style-2">
-  <%= form_with model: @content, url: cruds_path,  method: :post do |f| %> 
+  <%= form_with model: @content, url: "/crudify/cruds",  method: :post do |f| %> 
     <%= render "form", content: @content, f: f %>
   <% end %>
 </div>
