@@ -66,7 +66,7 @@ namespace :crudify do
         modified_lines.unshift("#{existing_code}")
 
         found_last_line = true
-      elsif !found_last_line && line.strip.start_with?(keyword2) 
+      elsif !found_last_line && line.strip.start_with?(keyword1) 
         existing_code = "#{line}"
 
         if existing_code.present?
