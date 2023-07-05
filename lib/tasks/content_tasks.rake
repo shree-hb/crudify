@@ -31,6 +31,7 @@ namespace :crudify do
     display_val = args[:arg3]
     model_file_path = "app/models/#{model.underscore}.rb"
     keyword = "has_"
+    keyword1 = 'belongs_'
     params = []
     
     model_attr.each do |f,v|
@@ -48,7 +49,7 @@ namespace :crudify do
 
   relational_display_col :#{display_val}
 
-  
+
     HEREDOC
    
     contents = File.read(model_file_path)
@@ -57,6 +58,15 @@ namespace :crudify do
     
     contents.lines.reverse_each do |line| 
       if !found_last_line && line.strip.start_with?(keyword)
+        existing_code = "#{line}"
+
+        if existing_code.present?
+          existing_code += "\n  #{code_block}"
+        end     
+        modified_lines.unshift("#{existing_code}")
+
+        found_last_line = true
+      elsif !found_last_line && line.strip.start_with?(keyword2) 
         existing_code = "#{line}"
 
         if existing_code.present?

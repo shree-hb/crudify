@@ -28,7 +28,7 @@ To Generate Initializer, run below rake
 To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
 
    # Syntax
-    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <ModelL_Name>, <Display_Attr>]"
+    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <ModL_Name>, <Display_Attr>]"
    # Department
     $ rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&contact_number=txt,Department, name]"
    # Resource
@@ -50,13 +50,13 @@ To configure model for which CRUD needs to be enabled , run below task (change i
    # Question
     $ rake "crudify:crudify_model[question_type=enum&kind=enum&text=txt&question_identifier=txt&question_category_id=txt&question_section_id=txt&order=txt,Question,text]"
    # Question Category
-    $ rake "crudify:crudify_model[name=txt&order=txt&question_count=txt,QuestionCategory,name]"
+    $ rake "crudify:crudify_model[name=txt&order=txt&questions_count=txt,QuestionCategory,name]"
    # Question Section
     $ rake "crudify:crudify_model[name=txt&order=txt&question_category_id=txt,QuestionSection,name]"
    # Procedures
     $ rake "crudify:crudify_model[name=txt&department_id=txt&internal_name=txt,Procedure,name]"
    # Procedure Modifier
-    $ rake "crudify:crudify_model[display_name=txt&procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt&is_not_supported=txt,ProcedureModifier,display_name]"
+    $ rake "crudify:crudify_model[procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt,ProcedureModifier,modifier_identifier]"
 
 ## Contributing
 

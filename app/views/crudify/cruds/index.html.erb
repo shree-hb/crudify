@@ -8,7 +8,7 @@
 </style>
 <br/>
 <%= link_to "Add new #{@contents.first.class}", new_crud_path(model: @contents.first.class) %>
-
+<br/>
 <% if @contents.present? %>
   <div class="form-style-2-heading"><%= @contents.first.class.to_s.titleize %> Listing </div>
 
