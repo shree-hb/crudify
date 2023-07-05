@@ -46,7 +46,9 @@ namespace :crudify do
   #                        0 for false i.e. field is NOT Editable          
   crud_col_hash #{params.join(', ')}
 
-  relational_display_col #{display_val.to_sym}
+  relational_display_col :#{display_val}
+
+  
     HEREDOC
    
     contents = File.read(model_file_path)
