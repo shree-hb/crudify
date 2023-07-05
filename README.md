@@ -19,15 +19,44 @@ Once gem is installed follow below steps
 
 In Routes.rb , Add below line
 
-   $ mount Crudify::Engine => "crudify"
+    $ mount Crudify::Engine => "crudify"
 
 To Generate Initializer, run below rake
   
-   $ rake crudify:generate_initializer --trace
+    $ rake crudify:generate_initializer --trace
 
 To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
 
-   $ rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&country=enum,Department]"
+   # Syntax
+    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <ModelL_Name>, <Display_Attr>]"
+   # Department
+    $ rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&contact_number=txt,Department, name]"
+   # Resource
+    $ rake "crudify:crudify_model[title=txt&action=txt&resource_category_id=txt&description=txt&display_value=txt,Resource, title]"
+   # Resource Category
+    $ rake "crudify:crudify_model[name=txt&department_id=txt,ResourceCategory, name]"
+   # Sms Template
+    $ rake "crudify:crudify_model[message=txt&template_type=enum,SmsTemplate, template_type]"
+   # Email Template
+    $ rake "crudify:crudify_model[template_type=enum&subject=txt&body=txt,EmailTemplate, template_type]"
+   # Notification Template
+    $ rake "crudify:crudify_model[type=txt&subject=txt&body=txt&notification_identifier=txt&link_entity_type=txt&link_entity_identifier=txt,NotificationTemplate, subject]"
+   # Task
+    $ rake "crudify:crudify_model[title=txt&name=txt&type=enum&action_to_perform=enum&task_type=enum&task_identifier=txt&link_data=txt  ,Task, title]"
+   # Task Reminder
+    $ rake "crudify:crudify_model[message=txt&task_id=txt&task_reminder_identifier=txt,TaskReminder, message]"
+   # Answer
+    $ rake "crudify:crudify_model[answer_type=enum&kind=enum&text=txt&question_id=txt&link_data=txt,Answer,answer_type]"
+   # Question
+    $ rake "crudify:crudify_model[question_type=enum&kind=enum&text=txt&question_identifier=txt&question_category_id=txt&question_section_id=txt&order=txt,Question,text]"
+   # Question Category
+    $ rake "crudify:crudify_model[name=txt&order=txt&question_count=txt,QuestionCategory,name]"
+   # Question Section
+    $ rake "crudify:crudify_model[name=txt&order=txt&question_category_id=txt,QuestionSection,name]"
+   # Procedures
+    $ rake "crudify:crudify_model[name=txt&department_id=txt&internal_name=txt,Procedure,name]"
+   # Procedure Modifier
+    $ rake "crudify:crudify_model[display_name=txt&procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt&is_not_supported=txt,ProcedureModifier,display_name]"
 
 ## Contributing
 
