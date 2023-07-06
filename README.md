@@ -5,9 +5,9 @@ The model attribute which is needed for CRUD can be configured at the model leve
 
 ## Installation
 
-Install the gem and add to the application's Gemfile by executing:
+Install the gem and add to the application's Gemfile below line:
 
-    $ bundle add crudify
+    $ gem 'crudify'
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
@@ -21,9 +21,9 @@ In Routes.rb , Add below line
 
     $ mount Crudify::Engine => "crudify"
 
-To Generate Initializer, run below rake
+To Generate Initializer, run below rake. This will generate content_engine.rb in the root app's initializer folder.
   
-    $ rake crudify:generate_initializer --trace
+    $ rake crudify:generate_initializer
 
 To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
 
@@ -56,7 +56,7 @@ To configure model for which CRUD needs to be enabled , run below task (change i
    # Procedures
     $ rake "crudify:crudify_model[name=txt&department_id=txt&internal_name=txt,Procedure,name]"
    # Procedure Modifier
-    $ rake "crudify:crudify_model[procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt,ProcedureModifier,modifier_identifier]"
+    $ rake "crudify:crudify_model[procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt&is_own_product=txtf,ProcedureModifier,modifier_identifier]"
 
 ## Contributing
 

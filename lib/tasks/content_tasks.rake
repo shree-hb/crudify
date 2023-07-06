@@ -44,7 +44,7 @@ namespace :crudify do
 
 
   def initial_content_models 
-    ar = [ ['name=txt&display_name=txt&department_type=txt&contact_number=txt', 'Department', 'name'] ,
+    ar = [ ['name=txt&display_name=txt&department_type=txt', 'Department', 'name'] ,
            ['title=txt&action=txt&resource_category_id=txt&description=txt&display_value=txt','Resource', 'title'],
            ['name=txt&department_id=txt','ResourceCategory', 'name'],
            ['message=txt&template_type=enum','SmsTemplate', 'template_type'],
@@ -53,11 +53,11 @@ namespace :crudify do
            ['title=txt&name=txt&type=enum&action_to_perform=enum&task_type=enum&task_identifier=txt&link_data=txt'  ,'Task', 'title'],
            ['message=txt&task_id=txt&task_reminder_identifier=txt','TaskReminder', 'message'],
            ['answer_type=enum&kind=enum&text=txt&question_id=txt&link_data=txt','Answer','answer_type'],
-           ['question_type=enum&kind=enum&text=txt&question_identifier=txt&question_category_id=txt&question_section_id=txt&order=txt','Question','text'],
+           ['question_type=enum&kind=enum&text=txt&question_identifier=txt&question_category_id=txt&questions_section_id=txt&order=txt','Question','text'],
            ['name=txt&order=txt&question_count=txt','QuestionCategory','name'],
            ['name=txt&order=txt&question_category_id=txt','QuestionSection','name'],
            ['name=txt&department_id=txt&internal_name=txt','Procedure','name'],
-           ['display_name=txt&procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt&is_not_supported=txt','ProcedureModifier','display_name'] 
+           ['procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt&is_own_product=txt','ProcedureModifier','display_name'] 
          ]
   end
   
