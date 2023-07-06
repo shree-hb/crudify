@@ -26,9 +26,42 @@ namespace :crudify do
 
   desc "Add code to mode to specify attributes required for CRUD interface"
   task :crudify_model, [:arg1, :arg2, :arg3] do |t,args|
-    model_attr =  Rack::Utils.parse_nested_query(args[:arg1])
-    model = args[:arg2]
-    display_val = args[:arg3]
+    #{}debugger
+    unless args[:arg1].nil? || args[:arg2].nil? || args[:arg3].nil?
+      model_attr =  Rack::Utils.parse_nested_query(args[:arg1])      
+      model = args[:arg2]
+      display_val = args[:arg3]
+      inject_code(model, model_attr, display_val )
+    else      
+      initial_content_models.each do |ct|
+        model_attr =Rack::Utils.parse_nested_query(ct[0])
+        model = ct[1]
+        display_val = ct[2]
+        inject_code(model, model_attr, display_val )
+      end
+    end
+  end 
+
+
+  def initial_content_models 
+    ar = [ ['name=txt&display_name=txt&department_type=txt&contact_number=txt', 'Department', 'name'] ,
+           ['title=txt&action=txt&resource_category_id=txt&description=txt&display_value=txt','Resource', 'title'],
+           ['name=txt&department_id=txt','ResourceCategory', 'name'],
+           ['message=txt&template_type=enum','SmsTemplate', 'template_type'],
+           ['template_type=enum&subject=txt&body=txt','EmailTemplate','template_type'],
+           ['type=txt&subject=txt&body=txt&notification_identifier=txt&link_entity_type=txt&link_entity_identifier=txt','NotificationTemplate', 'subject'],
+           ['title=txt&name=txt&type=enum&action_to_perform=enum&task_type=enum&task_identifier=txt&link_data=txt'  ,'Task', 'title'],
+           ['message=txt&task_id=txt&task_reminder_identifier=txt','TaskReminder', 'message'],
+           ['answer_type=enum&kind=enum&text=txt&question_id=txt&link_data=txt','Answer','answer_type'],
+           ['question_type=enum&kind=enum&text=txt&question_identifier=txt&question_category_id=txt&question_section_id=txt&order=txt','Question','text'],
+           ['name=txt&order=txt&question_count=txt','QuestionCategory','name'],
+           ['name=txt&order=txt&question_category_id=txt','QuestionSection','name'],
+           ['name=txt&department_id=txt&internal_name=txt','Procedure','name'],
+           ['display_name=txt&procedure_id=txt&modifier_type=enum&value=txt&modifier_identifier=txt&is_not_supported=txt','ProcedureModifier','display_name'] 
+         ]
+  end
+  
+  def inject_code(model, model_attr, display_val )
     model_file_path = "app/models/#{model.underscore}.rb"
     keyword = "has_"
     keyword1 = 'belongs_'
@@ -83,5 +116,4 @@ namespace :crudify do
     File.write(model_file_path, modified_lines.join, encoding: "UTF-8")
     puts "Check model #{model}, Crudify column code added"
   end
-
 end

@@ -28,9 +28,9 @@ To Generate Initializer, run below rake
 To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
 
    # Syntax
-    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <ModL_Name>, <Display_Attr>]"
+    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <Model_Name>, <Display_Attr>]"
    # Department
-    $ rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&contact_number=txt,Department, name]"
+    $ rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&country=txt,Department, name]"
    # Resource
     $ rake "crudify:crudify_model[title=txt&action=txt&resource_category_id=txt&description=txt&display_value=txt,Resource, title]"
    # Resource Category
