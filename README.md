@@ -25,10 +25,13 @@ To Generate Initializer, run below rake. This will generate content_engine.rb in
   
     $ rake crudify:generate_initializer
 
+To Generate CRUD for common content models like Resources, Tasks, Email Template etc , use below rake 
+    $ rake crudify:crudify_model
+
 To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
 
    # Syntax
-    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <Model_Name>, <Display_Attr>]"
+    $ rake "crudify:crudify_model[<attr_name=txt>&<attr_name=enum>, <Model_Name>, <Display_Attr>]" for adding to specific model
    # Department
     $ rake "crudify:crudify_model[name=txt&display_name=txt&department_type=txt&country=txt,Department, name]"
    # Resource
