@@ -1,0 +1,6 @@
+<% if user_signed_in? %>
+  <li><%= link_to 'Sign Out', main_app.destroy_user_session_path, method: :delete %></li>
+  <%= yield :dynamic_view %>
+<% else %>
+  <li><%= link_to 'Sign In', main_app.new_user_session_path %></li>
+<% end %>
