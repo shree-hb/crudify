@@ -66,7 +66,7 @@
 
 <div class="container">
 <h2>Log in</h2>
-<%= form_with(url: session_path(resource_name, platform: 'web', is_from_crudify: 1), method: :post, local: true, id: 'login-form') do |f| %>
+<%= form_with(url: authy.login_path(resource_name, platform: 'web', is_from_crudify: 1), method: :post, local: true, id: 'login-form') do |f| %>
 
 
         <div class="field">
@@ -84,20 +84,3 @@
       </div>
     <% end %>
  <div/>
-
-  <script>
-      document.getElementById('login-form').addEventListener('submit', function(event) {
-          var request = new XMLHttpRequest();
-          request.open(this.method, this.action, true);
-          request.setRequestHeader('platform', 'web');
-          event.preventDefault();
-
-          var formData = new FormData(this);
-          request.onload = function() {
-              if (request.status === 200) {
-                  window.location = '/crudify/cruds'
-              }
-          };
-          request.send(formData);
-      });
-  </script>

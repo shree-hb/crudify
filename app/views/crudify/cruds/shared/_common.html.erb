@@ -1,46 +1,9 @@
 <% if user_signed_in? %>
-  <li><%= link_to 'Sign Out', main_app.destroy_user_session_path, method: :delete, id: 'sign-out-link' %></li>
+  <%= form_with(url: authy.login_path(sign_out_path: '/crudify/cruds'), method: :delete, id: 'sign-out-form') do %>
+    <%= submit_tag 'Sign Out', id: 'sign-out-link' %>
+  <% end %>
   <%= yield :dynamic_view %>
 <% else %>
   <li><%= link_to 'Sign In', main_app.new_user_session_path %></li>
 <% end %>
 
-
-
-<script>
-
-    function getCookie(name) {
-        function escape(s) { return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, '\\$1'); }
-        var match = document.cookie.match(RegExp('(?:^|;\\s*)' + escape(name) + '=([^;]*)'));
-        return match ? match[1] : null;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var signOutLink = document.getElementById('sign-out-link');
-
-        if (signOutLink) {
-            signOutLink.addEventListener('click', function(event) {
-                event.preventDefault();
-
-                fetch(signOutLink.getAttribute('href'), {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${getCookie('secure_token')}`,
-                        'Content-Type': 'application/json'
-                    },
-                })
-                  .then(function(response) {
-                      if (response.ok) {
-                          window.location.href = '/users/sign_in';
-                      } else {
-                          console.error('ERROR: ' + response.status);
-                      }
-                  })
-                  .catch(function(error) {
-                      console.error('ERROR: ', error);
-                  });
-            });
-        }
-    });
-
-</script>
