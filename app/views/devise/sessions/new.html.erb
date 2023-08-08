@@ -66,7 +66,7 @@
 
 <div class="container">
 <h2>Log in</h2>
-<%= form_with(url: authy.login_path(resource_name, platform: 'web', is_from_crudify: 1), method: :post, local: true, id: 'login-form') do |f| %>
+<%= form_with(url: login_path(resource_name, platform: 'web', is_from_crudify: 1), method: :post, local: true, id: 'login-form') do |f| %>
 
 
         <div class="field">
