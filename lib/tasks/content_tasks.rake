@@ -14,7 +14,8 @@ namespace :crudify do
         content_models: [ 'Department' ],
         application_name: "Secure Start ",
         main_theme_color: "#8A6E93",
-        secondary_theme_color: "#8A6E931"
+        secondary_theme_color: "#8A6E931",
+        is_auth_enabled: false
       }
     RUBY
 

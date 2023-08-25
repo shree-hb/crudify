@@ -4,7 +4,7 @@
     <% col_name.to_s.class %>
     <% data_type = @content.class.columns_hash["#{col_name}"].type %>
     <span> <%= col_name.to_s.humanize %>:</span>
-      <%=content_tag_helper(col_name, @content, {attr: attr, datatype: data_type }) %>
+    <%=content_tag_helper(col_name, @content, {attr: attr, datatype: data_type }) %>
   </label>
 <%end%>
 <%= hidden_field_tag :model, @content.class %>

@@ -1,0 +1,86 @@
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        width: 400px;
+        padding: 20px;
+        background-color: #e0f0ff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .field {
+        margin-bottom: 15px;
+    }
+
+    .field label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .field input[type="text"],
+    .field input[type="password"],
+    .field input[type="email"],
+    .field input[type="checkbox"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .field input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    .actions {
+        text-align: center;
+    }
+
+    .actions input[type="submit"] {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .actions input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+
+<div class="container">
+<h2>Log in</h2>
+<%= form_with(url: login_path(resource_name, platform: 'web', is_from_crudify: 1), method: :post, local: true, id: 'login-form') do |f| %>
+
+
+        <div class="field">
+          <%= label_tag :email %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
+
+        <div class="field">
+          <%= label_tag :password %><br />
+          <%= f.password_field :password, autocomplete: "current-password" %>
+        </div>
+
+      <div class="actions">
+        <%= f.submit "Log in" %>
+      </div>
+    <% end %>
+ <div/>

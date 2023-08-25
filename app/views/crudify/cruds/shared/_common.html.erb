@@ -1,0 +1,11 @@
+<% if(Rails.application.config.content_engine[:is_auth_enabled] ? user_signed_in? : true) %>
+  <% if(Rails.application.config.content_engine[:is_auth_enabled]) %>
+      <%= form_with(url: authy.login_path(sign_out_path: '/crudify/cruds'), method: :delete, id: 'sign-out-form') do %>
+        <%= submit_tag 'Sign Out', id: 'sign-out-link' %>
+      <% end %>
+    <% end %>
+  <%= yield :dynamic_view %>
+<% else %>
+  <li><%= link_to 'Sign In', main_app.new_user_session_path %></li>
+<% end %>
+
