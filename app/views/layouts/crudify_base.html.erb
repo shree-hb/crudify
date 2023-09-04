@@ -174,6 +174,12 @@
   Content Management
 </header>
 
+<% flash.each do |type, message| %>
+  <div class="flash <%= type %>">
+    <%= message %>
+  </div>
+<% end %>
+
 <section style="flex: 1;">
   <nav>
     <% Rails.application.config.content_engine[:content_models].each do |content| %>
@@ -182,7 +188,6 @@
     </ul>
     <%end%>
   </nav>
-  
   <article>
     <%= yield %>
   </article>

@@ -36,6 +36,7 @@ module Crudify
         end
       end
       form_obj.save
+      ArchiveLog.track_log(form_obj, 'create')
       redirect_to cruds_path({model: @model})
     end
 
@@ -62,7 +63,20 @@ module Crudify
         end
       end
       content_obj.save
+      ArchiveLog.track_log(content_obj, 'update')
       redirect_to cruds_path({model: @model})
+    end
+   
+    def export_delta_json 
+      changes = ArchiveLog.non_archived
+      # Serialize and save
+      if changes.present?
+        File.open("#{Rails.root}/db/content/crudify_changes_#{Time.now}.json", "w") do |f|
+          f.write(changes.to_json)
+        end
+      end
+      flash[:notice] = 'The delta file was imported successfully'
+      redirect_to cruds_path
     end
 
     private
