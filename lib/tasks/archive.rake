@@ -1,10 +1,11 @@
 namespace :archive do
   desc "This will import the delta generated via Crudify into the database on which this task is being performed"
   task :delta_import, [:file_name] => :environment do |t, args|
-    print "\n Importing content delta STARTED \n\n"
+    print "\n ------ Importing content delta STARTED ------ \n"
     file_name = args[:file_name]
-    abort("ABORTING: Please pass the Delta JSON file imported via Crudify to proceed")
 
+    abort("--- ABORTING RAKE :: Please pass the Delta JSON file imported via Crudify to proceed ---") if file_name.blank?
+    
     file_content = File.read("#{Rails.root}/db/content/#{file_name}")
     records = JSON.parse(file_content)
     records.each do |record|
@@ -21,6 +22,6 @@ namespace :archive do
       end
       ArchiveLog.update(record["id"], is_exported:true)
     end
-    print "\n\n Importing content delta COMPLETED\n"
+    print "\n ------ Importing content delta COMPLETED -----\n"
   end
 end
