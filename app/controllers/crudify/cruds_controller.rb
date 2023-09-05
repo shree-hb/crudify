@@ -71,11 +71,16 @@ module Crudify
       changes = ArchiveLog.non_archived
       # Serialize and save
       if changes.present?
-        File.open("#{Rails.root}/db/content/crudify_changes_#{Time.now}.json", "w") do |f|
+        revision = changes.last.id
+        # Format the time to get YYYYMMDD_HHMMSS_SSS
+        formatted_time = Time.now.strftime('%d%m%Y_%H%M%S_%L')
+        file_name = "CrudifyDelta_#{formatted_time}_revision#{revision}"
+        File.open("#{Rails.root}/db/content/#{file_name}.json", "w") do |f|
           f.write(changes.to_json)
         end
       end
-      flash[:notice] = 'The delta file was imported successfully'
+      flash[:notice] = "The Delta file: <span class='highlighted-filename'>#{file_name}.json</span> 
+                        was imported successfully, find the file at this path: <span class='highlighted-filename'>db/content/</span>."
       redirect_to cruds_path
     end
 
@@ -88,5 +93,3 @@ module Crudify
     end
   end
 end
-
-

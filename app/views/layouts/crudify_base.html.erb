@@ -162,6 +162,17 @@
     color: #fff;
   }
 
+  .flash_success{
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: green;
+  }
+
+  .highlighted-filename{
+    color: red;
+  }
+
   /* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
   @media (max-width: 600px) {
     section {
@@ -177,12 +188,6 @@
   Content Management
 </header>
 
-<% flash.each do |type, message| %>
-  <div class="flash <%= type %>">
-    <%= message %>
-  </div>
-<% end %>
-
 <section style="flex: 1;">
   <nav>
     <% Rails.application.config.content_engine[:content_models].each do |content| %>
@@ -192,6 +197,11 @@
     <%end%>
   </nav>
   <article>
+    <% flash.each do |type, message| %>
+    <div class="flash_success">
+      <%= message.html_safe %>
+    </div>
+  <% end %>
     <%= yield %>
   </article>
 </section>

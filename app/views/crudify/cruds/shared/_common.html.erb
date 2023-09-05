@@ -1,4 +1,10 @@
-<%= link_to "Export Delta", crudify_export_delta_json_path, {:style=>'text-decoration: underline;color:#0096ff;float: right;font-weight:bold;font-size: 26px;'} if ArchiveLog.non_archived.present? %>
+
+<% if ArchiveLog.non_archived.present? %>
+  <span style="float:right;padding: 0 21px 0 0;font-weight:bold;font-size: 15px;;"> Export Delta </span>
+  <%= link_to crudify_export_delta_json_path, style: 'float: right;' do  %>
+  <%= image_tag 'crudify/download-icon-1.png', alt: 'Export Delta', style: 'width: 45px;' %>
+<% end %>
+<%end%>
 <% if(Rails.application.config.content_engine[:is_auth_enabled] ? user_signed_in? : true) %>
   <% if(Rails.application.config.content_engine[:is_auth_enabled]) %>
       <%= form_with(url: authy.login_path(sign_out_path: '/crudify/cruds'), method: :delete, id: 'sign-out-form') do %>

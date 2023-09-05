@@ -8,6 +8,10 @@ namespace :archive do
     
     file_content = File.read("#{Rails.root}/db/content/#{file_name}")
     records = JSON.parse(file_content)
+    record_ids = records.map{|s| s["id"] }
+  
+    unarchived_records = ArchiveLog.where(id: record_ids, is_exported: false)
+    abort("--- ABORTING RAKE :: This JSON has already been processed ---") if unarchived_records.blank?
     records.each do |record|
       
       model = record["class_type"].constantize
