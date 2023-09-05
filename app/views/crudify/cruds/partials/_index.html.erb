@@ -10,18 +10,14 @@
 <br/>
 <% if @contents.present? %>
   <div class="form-style-2-heading"><%= @contents.first.class.to_s.titleize %> Listing </div>
-
-
-  <br/><br/>
-
   <div style="overflow: hidden;width: 100%;">
-    <table class="table table-bordered" style="overflow-x: auto;width: 100%;margin: 0;">
+    <table class="table table-bordered" style="overflow-x: auto;width: 100%;margin: 0;1px solid #080808">
       <tbody>
       <tr>
         <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
-          <th style="background-color:#F5F0F5;"><%= ct.to_s.humanize.capitalize %></th>
+          <th style="background-color:#eeeeee;"><%= ct.to_s.humanize.capitalize %></th>
         <%end%>
-        <th style="background-color:#F5F0F5;"> Action  </th>
+        <th style="background-color:#eeeeee;"> Action  </th>
       </tr>
       <% @contents.each do |cont| %>
         <tr>

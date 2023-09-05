@@ -41,9 +41,11 @@
 
   /* Style the navigation menu */
   nav {
-    background: #F5F0F5;
-    min-width: 200px;
-    padding: 40px 10px 10px 10px;
+    background: <%= Rails.application.config.content_engine[:navigation_theme_color] %> ;
+    min-width: 158px;
+    padding: 36px 8px 27px 36px;
+    font-size: 15px;
+    text-decoration: solid;
   }
 
   .left-panel {
@@ -71,7 +73,7 @@
 
   /* Style the footer */
   footer {
-    background-color: #8A6E93;
+    background-color: <%= Rails.application.config.content_engine[:main_theme_color] %>;
     border-bottom: 1px solid #ddd;
     font-size: 20px;
     text-align: center;
@@ -85,12 +87,13 @@
     font: 13px Arial, Helvetica, sans-serif;
   }
   .form-style-2-heading{
+    text-align: center;
     font-weight: bold;
     font-style: italic;
     border-bottom: 2px solid #ddd;
     margin-bottom: 20px;
     font-size: 15px;
-    padding-bottom: 3px;
+    padding-bottom: 12px;
   }
   .form-style-2 label{
     display: block;

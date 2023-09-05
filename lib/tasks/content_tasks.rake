@@ -12,9 +12,10 @@ namespace :crudify do
       
       Rails.application.config.content_engine = {
         content_models: [ 'Department' ],
-        application_name: "Secure Start ",
-        main_theme_color: "#8A6E93",
-        secondary_theme_color: "#8A6E931",
+        application_name: " Insightec 2.0 ",
+        main_theme_color: "#1fb3d0",
+        secondary_theme_color: "#a7b3b421",
+        navigation_theme_color: "#fafafa",
         is_auth_enabled: false
       }
     RUBY
@@ -43,6 +44,15 @@ namespace :crudify do
     end
   end 
 
+  desc 'Generate initializer file for content engine in HOL app'
+  task export_delta: :environment do
+    changes = ArchiveLog.non_archived
+    # Serialize and save
+    File.open("#{Rails.root}/db/content/crudify_changes_#{Time.now}.json", "w") do |f|
+      f.write(changes.to_json)
+    end
+    
+  end
 
   def initial_content_models 
     ar = [ ['name=txt&display_name=txt&department_type=txt', 'Department', 'name'] ,
@@ -117,4 +127,6 @@ namespace :crudify do
     File.write(model_file_path, modified_lines.join, encoding: "UTF-8")
     puts "Check model #{model}, Crudify column code added"
   end
+
+
 end
