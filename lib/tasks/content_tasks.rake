@@ -63,7 +63,7 @@ namespace :crudify do
            ['type=txt&subject=txt&body=txt&notification_identifier=txt&link_entity_type=txt&link_entity_identifier=txt','NotificationTemplate', 'subject'],
            ['title=txt&name=txt&type=enum&action_to_perform=enum&task_type=enum&task_identifier=txt&link_data=txt'  ,'Task', 'title'],
            ['message=txt&task_id=txt&task_reminder_identifier=txt','TaskReminder', 'message'],
-           ['answer_type=enum&kind=enum&text=txt&question_id=txt&link_data=txt','Answer','answer_type'],
+           ['answer_type=enum&kind=enum&text=txt&question_id=txt','Answer','answer_type'],
            ['question_type=enum&kind=enum&text=txt&question_identifier=txt&question_category_id=txt&question_section_id=txt&order=txt','Question','text'],
            ['name=txt&order=txt&questions_count=txt','QuestionCategory','name'],
            ['name=txt&order=txt&question_category_id=txt','QuestionSection','name'],
@@ -83,7 +83,7 @@ namespace :crudify do
     end
 
     code_block = <<-HEREDOC   
-# Content CRUDIFY Engine 
+# Content CRUDIFY Gem 
   # Syntax  
   # crud_col_hash   filed_name: "<data-type>,<is_editable>"
   # <data-type> can be : 'txt' / 'enum'
@@ -92,7 +92,6 @@ namespace :crudify do
   crud_col_hash #{params.join(', ')}
 
   relational_display_col :#{display_val}
-
 
     HEREDOC
    

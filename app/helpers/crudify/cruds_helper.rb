@@ -16,8 +16,24 @@ module Crudify
       data_type = options[:datatype]
     
       tag = if col_name.match(/_id$/) 
-              relational_model = col_name.to_s.split(/_id$/)[0].capitalize 
-              collection1 = relational_model.camelize.constantize.all.collect{|s| [s.send(s.class.relational_display_col), s.id ] } rescue []
+              is_polymorphic = obj.class.polymorphic_content.delete_if{|n| n.eql?(:polymorphic_content) }
+              if is_polymorphic
+                poly_model =  obj.class.reflections.select { |name, reflection| reflection.options[:polymorphic] == true }
+                model = poly_model.keys.first
+              else
+                model = ""
+              end
+              
+              if !is_polymorphic.blank? && col_name.match(model)
+                collection1 = nil
+                is_polymorphic.each do |poly_model|
+                  col_arr = poly_model.to_s.camelize.constantize.all.collect{|s| [ "#{s.class.name} - #{s.send(s.class.relational_display_col)}", s.id ] } rescue []
+                  collection1.nil? ? collection1 = col_arr : collection1.concat(col_arr)
+                end         
+              else
+                relational_model = col_name.to_s.split(/_id$/)[0].capitalize
+                collection1 = relational_model.camelize.constantize.all.collect{|s| [s.send(s.class.relational_display_col), s.id ] } rescue []
+              end
               select_tg(col_name, form_obj, value, collection1, disabled=false)
             elsif field_type.eql?('enum')
               collection =  obj.class.send("#{col_name}s").keys
@@ -30,6 +46,12 @@ module Crudify
               txt_box(col_name, form_obj, value, disabled)
             end
       tag
+    end
+
+    def polymorphic_select(obj, col_name)
+      binding.pry
+      models = obj.class.polymorphic_content.delete_if{|n| n.eql?(:polymorphic_content) }
+      collection =  models.map { |s| s.to_s.classify }
     end
 
     def txt_box(col_name, form_obj, value, disabled=false)

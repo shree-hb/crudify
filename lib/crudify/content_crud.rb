@@ -16,7 +16,10 @@ module Crudify
     def crud_columns(*columns)
       define_singleton_method(:crud_columns) { columns }
     end
-
+    
+    def polymorphic_content(*models)
+      define_singleton_method(:polymorphic_content) { models }
+    end
   end
 end
 

@@ -26,6 +26,7 @@
               <% if ct.match(/_id$/) %>
                 <% relational_model = ct.to_s.split(/_id$/)[0] %>
                 <% relational_obj = cont.send(relational_model) %>
+                 
                 <% if relational_obj %>
                   <%= relational_obj.send(relational_obj.class.relational_display_col) %>
                 <%end%>
