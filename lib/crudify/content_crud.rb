@@ -20,6 +20,11 @@ module Crudify
     def polymorphic_content(*models)
       define_singleton_method(:polymorphic_content) { models }
     end
+
+    def content_identifier(cols)
+      define_singleton_method(:content_identifier) { cols }
+    end
+
   end
 end
 

@@ -35,8 +35,8 @@ module Crudify
           form_obj[k[0]] =  k[1]
         end
       end
-      form_obj.save
       ArchiveLog.track_log(form_obj, 'create')
+      form_obj.save
       redirect_to cruds_path({model: @model})
     end
 
@@ -62,8 +62,8 @@ module Crudify
           content_obj[k[0]] =  k[1]
         end
       end
-      content_obj.save
       ArchiveLog.track_log(content_obj, 'update')
+      content_obj.save
       redirect_to cruds_path({model: @model})
     end
    

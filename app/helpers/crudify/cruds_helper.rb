@@ -15,9 +15,9 @@ module Crudify
       end 
       data_type = options[:datatype]
     
-      tag = if col_name.match(/_id$/) 
-              is_polymorphic = obj.class.polymorphic_content.delete_if{|n| n.eql?(:polymorphic_content) }
-              if is_polymorphic
+      tag = if col_name.match(/_id$/)
+              is_polymorphic = obj.class.polymorphic_content&.delete_if{|n| n.eql?(:polymorphic_content) }
+              if is_polymorphic.blank?
                 poly_model =  obj.class.reflections.select { |name, reflection| reflection.options[:polymorphic] == true }
                 model = poly_model.keys.first
               else
