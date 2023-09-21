@@ -1,4 +1,19 @@
 namespace :crudify do
+
+  desc 'Copy Crudify migrations to the application'
+  task archive_migration: :environment do
+    migrations_dir = File.expand_path("../../db/migrate", __FILE__)
+    Rails.application.config.paths["db/migrate"].expanded.each do |expanded_path|
+      Dir["#{migrations_dir}/*"].each do |file|
+        destination_file = File.join(expanded_path, File.basename(file))
+        unless File.exist?(destination_file)
+          FileUtils.cp_r(file, destination_file)
+        end
+      end
+    end
+    puts '%%%% Crudify migration added to the app, Run the rake db:migrate %%%%'
+  end
+  
   
   desc 'Generate initializer file for content engine in HOL app'
   task generate_initializer: :environment do

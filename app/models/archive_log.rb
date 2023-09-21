@@ -13,10 +13,9 @@
        
        class_identifier = obj.class.content_identifier
        record_identifier =  obj.send("#{class_identifier}_was")
-      
+       
        payload.merge!(content_identifier: obj.class.content_identifier || nil)
        payload.merge!(row_identifier: record_identifier || nil)
-
        attrs[:payload] = payload
        record.update(attrs)
      end

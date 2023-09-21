@@ -35,7 +35,8 @@
               <%end%>
             </td>
           <%end%>
-          <td><%= link_to "Edit",  edit_crud_path(cont, model: cont.class), query: {model: cont.class} %> </td>
+          <td><%= link_to "Edit",  edit_crud_path(cont, model: cont.class), query: {model: cont.class} %> | 
+              <%= link_to "Delete", "/crudify/delete_content/#{cont.id}?model=#{cont.class}" %> </td>
         </tr>
       <% end %>
       <tbody>

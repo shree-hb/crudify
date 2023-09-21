@@ -36,7 +36,7 @@ module Crudify
         end
       end
       ArchiveLog.track_log(form_obj, 'create')
-      form_obj.save
+      #{}form_obj.save
       redirect_to cruds_path({model: @model})
     end
 
@@ -63,7 +63,7 @@ module Crudify
         end
       end
       ArchiveLog.track_log(content_obj, 'update')
-      content_obj.save
+      #{}content_obj.save
       redirect_to cruds_path({model: @model})
     end
    
@@ -81,7 +81,14 @@ module Crudify
       end
       flash[:notice] = "The Delta file: <span class='highlighted-filename'>#{file_name}.json</span> 
                         was imported successfully, find the file at this path: <span class='highlighted-filename'>db/content/</span>."
-      redirect_to cruds_path
+      redirect_to cruds_path({model: @model})
+    end
+
+    def delete_content
+      obj_id = params["id"]
+      content_obj =  @model_class.find_by_id(obj_id)
+      ArchiveLog.track_log(content_obj, 'delete')
+      redirect_to cruds_path({model: @model})
     end
 
     private
