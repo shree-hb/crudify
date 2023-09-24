@@ -23,7 +23,8 @@
         <tr>
           <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
             <td style="max-width: 200px;overflow: hidden; white-space: normal;text-overflow: ellipsis;">
-              <% if ct.match(/_id$/) %>
+               <% skip_relation = cont.class&.skip_relation&.respond_to?(:include?) && cont.class&.skip_relation&.include?(ct) %>
+               <% if ct.match(/_id$/) && !skip_relation %>
                 <% relational_model = ct.to_s.split(/_id$/)[0] %>
                 <% relational_obj = cont.send(relational_model) %>
                  

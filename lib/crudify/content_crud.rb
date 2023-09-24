@@ -24,6 +24,10 @@ module Crudify
     def content_identifier(cols)
       define_singleton_method(:content_identifier) { cols }
     end
+    
+    def skip_relation(*cols)
+      define_singleton_method(:skip_relation) { cols }
+    end
 
   end
 end

@@ -20,7 +20,7 @@ module Crudify
       app.config.assets.paths << root.join('app', 'assets', 'images').to_s
     end
 
-    initializer "your_gem_name.assets.precompile" do |app|
+    initializer "crudify.assets.precompile" do |app|
       app.config.assets.precompile += %w( crudify/download-icon-1.png )
     end
     

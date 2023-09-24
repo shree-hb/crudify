@@ -14,9 +14,11 @@ module Crudify
         disabled = false
       end 
       data_type = options[:datatype]
-    
-      tag = if col_name.match(/_id$/)
-              is_polymorphic = obj.class.polymorphic_content&.delete_if{|n| n.eql?(:polymorphic_content) }
+      skip_relation = obj.class&.skip_relation&.respond_to?(:include?) && obj.class&.skip_relation.include?(col_name)
+      tag = if col_name.match(/_id$/) && !skip_relation
+             # is_polymorphic = obj.class.polymorphic_content&.delete_if{|n| n.eql?(:polymorphic_content) }
+              content = obj.class.respond_to?(:polymorphic_content) ? obj.class.polymorphic_content : nil
+              is_polymorphic = content.is_a?(Array) ? content.delete_if { |n| n.eql?(:polymorphic_content) } : nil
               if is_polymorphic.blank?
                 poly_model =  obj.class.reflections.select { |name, reflection| reflection.options[:polymorphic] == true }
                 model = poly_model.keys.first
@@ -68,6 +70,3 @@ module Crudify
 
   end
 end
-
-
-
