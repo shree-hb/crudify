@@ -76,5 +76,9 @@ module Crudify
       end
     end
 
+    def delete_count(obj)
+      ArchiveLog.unarchived_deleted(obj.name).count
+    end
+
   end
 end

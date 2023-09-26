@@ -6,16 +6,18 @@
     }
 </style>
 <br/>
-<%= link_to "Add new #{@contents.first.class}", new_crud_path(model: @contents.first.class) %>
+
 <br/>
 <% if @contents.present? %>
   <div class="form-style-2-heading"><%= @contents.first.class.to_s.titleize %> Listing </div>
   <div style="overflow: hidden;width: 100%;">
     <span>
-      <%= link_to 'Delete Selected', '#', id: 'deleteLink' %>
+      <%= link_to 'Delete Selected', '#', id: 'deleteLink',class: 'button-link' %> &nbsp;&nbsp;
       <%= hidden_field_tag 'model', @model_class, id: 'slected_model' %>
+      <%= link_to "Add new #{@contents.first.class}", new_crud_path(model: @contents.first.class), class: 'button-link' %>
     </span>
-    <br/>
+    <span style='color:red;font-weight:bold;float: right;
+    padding: 0 40px 12px 0;font-size: medium;'> Deleted Count : <%= delete_count(@model_class) %> </span>
     <table class="table table-bordered" style="overflow-x: auto;width: 100%;margin: 0;1px solid #080808">
       <tbody>
         <tr>

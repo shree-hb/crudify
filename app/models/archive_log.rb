@@ -4,9 +4,11 @@
     serialize :payload
 
     scope :non_archived, -> { where("is_exported = false") }
+    
+    scope :unarchived_deleted, -> (class_type) { where(class_type: class_type, action: 'delete', is_exported: false) }
      
-     # Logging for Update action
-     def self.track_log(obj, action)
+    # Logging for Update action
+    def self.track_log(obj, action)
       class_id = obj.id
       attrs = {action: action, class_id: class_id, class_type: obj.class, is_exported: false } 
       payload = obj.as_json.delete_if{ |col| EXCLUDE_COLS.include?(col) }       
@@ -19,10 +21,10 @@
       payload.merge!(row_identifier: record_identifier || nil)
       attrs[:payload] = payload
       record.update(attrs)
-     end
+    end
     
-     # Logging for Delete action
-     def self.track_delete_log(record_objs)
+    # Logging for Delete action
+    def self.track_delete_log(record_objs)
        return if record_objs.blank?
        action = 'delete'
        record_objs.each do |obj|
@@ -31,10 +33,10 @@
          record = self.find_or_initialize_by(attrs)
          record.update(attrs)
        end
-     end
+    end
 
-     # Logging for Create action
-     def self.track_create_log(obj)     
+    # Logging for Create action
+    def self.track_create_log(obj)     
       payload = obj.as_json.delete_if{ |col| EXCLUDE_COLS.include?(col) }
       attrs = {payload: payload, class_type: obj.class.name, is_exported: false, action: 'create' } 
       self.create(attrs)
