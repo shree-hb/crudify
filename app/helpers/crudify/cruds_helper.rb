@@ -50,8 +50,7 @@ module Crudify
       tag
     end
 
-    def polymorphic_select(obj, col_name)
-      binding.pry
+    def polymorphic_select(obj, col_name)    
       models = obj.class.polymorphic_content.delete_if{|n| n.eql?(:polymorphic_content) }
       collection =  models.map { |s| s.to_s.classify }
     end
@@ -66,6 +65,15 @@ module Crudify
 
     def select_tg(col_name, form_obj, value, collection, disabled=false) 
       select_tag("#{form_obj}[#{col_name}]", options_for_select(collection, value), class: "select-field")
+    end
+
+    def get_action_tag(obj)
+      non_archived = ArchiveLog.where(class_id: obj.id, class_type: obj.class.name, action: 'delete', is_exported: false )
+      if non_archived.present?
+        return  "<span style='color:red;font-weight:bold;'> DELETED </span>"
+      else 
+        return nil
+      end
     end
 
   end

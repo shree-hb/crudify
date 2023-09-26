@@ -1,6 +1,8 @@
 module Crudify
   class CrudsController < ApplicationController
     layout 'crudify_base'
+    skip_before_action :verify_authenticity_token, only: [:delete_content]
+
 
     before_action :init
 
@@ -35,7 +37,7 @@ module Crudify
           form_obj[k[0]] =  k[1]
         end
       end
-      ArchiveLog.track_log(form_obj, 'create')
+      ArchiveLog.track_create_log(form_obj)
       #{}form_obj.save
       redirect_to cruds_path({model: @model})
     end
@@ -68,7 +70,7 @@ module Crudify
     end
    
     def export_delta_json 
-      changes = ArchiveLog.non_archived
+      changes = ArchiveLog.non_archived      
       # Serialize and save
       if changes.present?
         revision = changes.last.id
@@ -85,10 +87,14 @@ module Crudify
     end
 
     def delete_content
-      obj_id = params["id"]
-      content_obj =  @model_class.find_by_id(obj_id)
-      ArchiveLog.track_log(content_obj, 'delete')
-      redirect_to cruds_path({model: @model})
+      record_ids = params["id"].split(',')
+      @model = params[:model]
+      ArchiveLog.track_delete_log(record_ids)
+      #{}redirect_to cruds_path({model: @model})
+      flash[:notice] = "Deleted successfully."
+      respond_to do |format|
+        format.js { render 'delete_content' }
+      end
     end
 
     private

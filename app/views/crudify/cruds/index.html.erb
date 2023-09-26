@@ -1,6 +1,38 @@
-
 <% content_for :dynamic_view do %>
   <%= render 'crudify/cruds/partials/index' %>
 <% end %>
 
 <%= render 'crudify/cruds/shared/common' %>
+
+<script type="text/javascript">
+  document.getElementById('deleteLink').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    var selectedIds = Array.from(document.querySelectorAll('.record-checkbox:checked')).map(cb => cb.value).join(',');
+    var model = document.getElementById('slected_model').value;
+
+    if (selectedIds.length === 0) {
+      return alert('Please select records to delete.');
+    }
+
+    if (!confirm('Are you sure you want to delete the selected records?')) {
+      return;
+    }
+
+    // window.location.href = `/delete_content?model=${model}&id=${selectedIds}`;
+
+    fetch(`/crudify/delete_content/?model=${model}&id=${selectedIds}`)
+       .then(response => {
+        if (response.ok) {
+            return response.text();
+        } else {
+            throw new Error('Failed to delete');
+        }
+    })
+    .then(script => {
+        eval(script);
+    })
+    .catch(error => console.error('Error:', error));
+  });
+
+</script>

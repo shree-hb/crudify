@@ -11,35 +11,49 @@
 <% if @contents.present? %>
   <div class="form-style-2-heading"><%= @contents.first.class.to_s.titleize %> Listing </div>
   <div style="overflow: hidden;width: 100%;">
+    <span>
+      <%= link_to 'Delete Selected', '#', id: 'deleteLink' %>
+      <%= hidden_field_tag 'model', @model_class, id: 'slected_model' %>
+    </span>
+    <br/>
     <table class="table table-bordered" style="overflow-x: auto;width: 100%;margin: 0;1px solid #080808">
       <tbody>
-      <tr>
-        <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
-          <th style="background-color:#eeeeee;"><%= ct.to_s.humanize.capitalize %></th>
-        <%end%>
-        <th style="background-color:#eeeeee;"> Action  </th>
-      </tr>
-      <% @contents.each do |cont| %>
         <tr>
+          <th style="background-color:#eeeeee;"> Action  </th>
           <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
-            <td style="max-width: 200px;overflow: hidden; white-space: normal;text-overflow: ellipsis;">
-               <% skip_relation = cont.class&.skip_relation&.respond_to?(:include?) && cont.class&.skip_relation&.include?(ct) %>
-               <% if ct.match(/_id$/) && !skip_relation %>
-                <% relational_model = ct.to_s.split(/_id$/)[0] %>
-                <% relational_obj = cont.send(relational_model) %>
-                 
-                <% if relational_obj %>
-                  <%= relational_obj.send(relational_obj.class.relational_display_col) %>
-                <%end%>
-              <%else%>
-                <%= cont.send(ct) %>
-              <%end%>
-            </td>
+            <th style="background-color:#eeeeee;"><%= ct.to_s.humanize.capitalize %></th>
           <%end%>
-          <td><%= link_to "Edit",  edit_crud_path(cont, model: cont.class), query: {model: cont.class} %> | 
-              <%= link_to "Delete", "/crudify/delete_content/#{cont.id}?model=#{cont.class}" %> </td>
+          
         </tr>
-      <% end %>
+        <% @contents.each do |cont| %>
+          <tr>
+              <td> 
+                  <% action_tag = get_action_tag(cont).presence %>
+                  <% if action_tag %>
+                    <%= action_tag&.html_safe %>
+                  <% else %>
+                    <%= check_box_tag 'record_ids[]', "#{cont.id}|#{cont.class.name}", false, class: "record-checkbox"%>
+                    <%= link_to "Edit",  edit_crud_path(cont, model: cont.class), query: {model: cont.class} %> 
+                  <% end %>
+              </td>
+            <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
+              <td style="max-width: 200px;overflow: hidden; white-space: normal;text-overflow: ellipsis;">
+                <% skip_relation = cont.class&.skip_relation&.respond_to?(:include?) && cont.class&.skip_relation&.include?(ct) %>
+                <% if ct.match(/_id$/) && !skip_relation %>
+                  <% relational_model = ct.to_s.split(/_id$/)[0] %>
+                  <% relational_obj = cont.send(relational_model) %>
+                  
+                  <% if relational_obj %>
+                    <%= relational_obj.send(relational_obj.class.relational_display_col) %>
+                  <%end%>
+                <%else%>
+                  <%= cont.send(ct) %>
+                <%end%>
+              </td>
+            <%end%>
+              
+          </tr>
+        <% end %>
       <tbody>
       </table>
   </div>
