@@ -30,14 +30,15 @@ module Crudify
       model = params[:model]
       form_attr = params[model.underscore]
       form_obj  = model.constantize.new()
-      form_attr.each do |k|
-        if form_obj.send(k[0]).class.eql?(Array)
-          form_obj[k[0]] = [JSON.parse(form_attr[k[0]].gsub('[','').gsub(']', '').gsub('=>', ':'))]
-        else
-          form_obj[k[0]] =  k[1]
-        end
-      end
-      ArchiveLog.track_create_log(form_obj)
+      parsed_payload = parse_payload(form_attr, form_obj)
+      # form_attr.each do |k|     
+      #   if form_obj.send(k[0]).class.eql?(Array)
+      #     form_obj[k[0]] = [JSON.parse(form_attr[k[0]].gsub('[','').gsub(']', '').gsub('=>', ':'))]
+      #   else
+      #     form_obj[k[0]] =  k[1]
+      #   end
+      # end
+      ArchiveLog.track_create_log(parsed_payload)
       #{}form_obj.save
       redirect_to cruds_path({model: @model})
     end
@@ -56,15 +57,9 @@ module Crudify
       end
 
       form_attr = params[@model.underscore.to_sym]
-      content_obj =  @model_class.find_by_id(params[:id])
-      form_attr.each do |k|
-        if content_obj.send(k[0]).class.eql?(Array)
-          content_obj[k[0]] = [JSON.parse(form_attr[k[0]].gsub('[','').gsub(']', '').gsub('=>', ':'))]
-        else
-          content_obj[k[0]] =  k[1]
-        end
-      end
-      ArchiveLog.track_log(content_obj, 'update')
+      content_obj =  @model_class.find_by_id(params[:id])     
+      parsed_payload = parse_payload(form_attr, content_obj)
+      ArchiveLog.track_log(parsed_payload, 'update')
       #{}content_obj.save
       redirect_to cruds_path({model: @model})
     end
@@ -104,5 +99,17 @@ module Crudify
       parent_class = self.class.superclass
       @model_class = parent_class.const_get(@model) rescue Department
     end
+
+    def parse_payload(form_attr, content_obj)
+      form_attr.each do |k|        
+        if content_obj.send(k[0]).class.eql?(Array)
+          val = form_attr[k[0]].gsub('[','').gsub(']', '').gsub('=>', ':')          
+          content_obj[k[0]] = val.present? ? [JSON.parse(val)] : [val]
+        else
+        content_obj[k[0]] =  k[1]
+        end
+      end
+      content_obj
+    end 
   end
 end
