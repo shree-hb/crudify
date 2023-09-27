@@ -105,6 +105,9 @@ module Crudify
         if content_obj.send(k[0]).class.eql?(Array)
           val = form_attr[k[0]].gsub('[','').gsub(']', '').gsub('=>', ':')          
           content_obj[k[0]] = val.present? ? [JSON.parse(val)] : [val]
+        elsif content_obj.send(k[0]).class.eql?(Hash)                
+          json_str = form_attr[k[0]].gsub(/:(\w+)=>/, '"\1": ').gsub("=>", ": ")
+          content_obj[k[0]] = JSON.parse(json_str, symbolize_names: true) rescue {}
         else
         content_obj[k[0]] =  k[1]
         end
