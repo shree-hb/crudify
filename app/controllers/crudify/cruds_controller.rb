@@ -31,13 +31,6 @@ module Crudify
       form_attr = params[model.underscore]
       form_obj  = model.constantize.new()
       parsed_payload = parse_payload(form_attr, form_obj)
-      # form_attr.each do |k|     
-      #   if form_obj.send(k[0]).class.eql?(Array)
-      #     form_obj[k[0]] = [JSON.parse(form_attr[k[0]].gsub('[','').gsub(']', '').gsub('=>', ':'))]
-      #   else
-      #     form_obj[k[0]] =  k[1]
-      #   end
-      # end
       ArchiveLog.track_create_log(parsed_payload)
       #{}form_obj.save
       redirect_to cruds_path({model: @model})

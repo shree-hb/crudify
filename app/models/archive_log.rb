@@ -12,13 +12,17 @@
       class_id = obj.id
       attrs = {action: action, class_id: class_id, class_type: obj.class, is_exported: false } 
       payload = obj.as_json.delete_if{ |col| EXCLUDE_COLS.include?(col) }       
-
       record = self.find_or_initialize_by(attrs)
+
       class_identifier = obj.class.content_identifier
-      record_identifier =  obj.send("#{class_identifier}_was")
+      conditions= []
+      class_identifier.each do |ct|
+        conditions <<  { content_identifier: ct , row_identifier: obj.send("#{ct}_was") }
+      end
       
-      payload.merge!(content_identifier: obj.class.content_identifier || nil)
-      payload.merge!(row_identifier: record_identifier || nil)
+      # payload.merge!(content_identifier: obj.class.content_identifier || nil)
+      # payload.merge!(row_identifier: record_identifier || nil)
+      payload.merge!(conditions: conditions)
       attrs[:payload] = payload
       record.update(attrs)
     end
