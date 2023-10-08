@@ -76,6 +76,15 @@ module Crudify
       end
     end
 
+    def get_child_action_tag(obj, child_obj_class)
+      non_archived = ArchiveLog.where(class_id: obj.id, class_type: obj.class.name, action: 'delete', is_exported: false )
+      if non_archived.present?
+        return  "<span style='color:red;font-weight:bold;'> DELETED #{child_obj_class} </span></br></br>"
+      else 
+        return nil
+      end
+    end
+
     def delete_count(obj)
       ArchiveLog.unarchived_deleted(obj.name).count
     end

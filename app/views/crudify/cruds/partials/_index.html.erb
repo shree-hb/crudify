@@ -21,11 +21,14 @@
     <table class="table table-bordered" style="overflow-x: auto;width: 100%;margin: 0;1px solid #080808">
       <tbody>
         <tr>
+         
           <th style="background-color:#eeeeee;"> Action  </th>
+          <% if @contents.first.class.child_relations.present? %>
+              <th style="background-color:#eeeeee;"> Child Relation </th>
+          <%end%>
           <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
             <th style="background-color:#eeeeee;"><%= ct.to_s.humanize.capitalize %></th>
           <%end%>
-          
         </tr>
         <% @contents.each do |cont| %>
           <tr>
@@ -34,10 +37,43 @@
                   <% if action_tag %>
                     <%= action_tag&.html_safe %>
                   <% else %>
-                    <%= check_box_tag 'record_ids[]', "#{cont.id}|#{cont.class.name}", false, class: "record-checkbox"%>
+                    <% parent_conditions = {} %>
+                    <% cont.class.content_identifier.each do |id| %>
+                      <% parent_conditions["#{id}"]= cont.send(id)  %>
+                    <%end%>
+                    <% parent_record_data = { parent_model: cont.class.name, parent_identifier: parent_conditions}.to_json %>
+                    <%= check_box_tag 'record_ids[]', [parent_record_data], false,class: "record-checkbox", data: { type: 'regular' }%>
                     <%= link_to "Edit",  edit_crud_path(cont, model: cont.class), query: {model: cont.class} %> 
                   <% end %>
               </td>
+              
+              <% if @contents.first.class.child_relations.present? %>
+                <td>
+                    <% @contents.first.class.child_relations.each do |rel|  %>
+                       <span style="color:red;">
+                          <% rel_obj = cont.send(rel)  %>
+                           <% unless rel_obj.blank? %>
+                              <% child_conditions = {} %>
+                              <% cont.class.content_identifier.each do |id| %>
+                                <% child_conditions["#{id}"]= cont.send(id)  %>
+                              <%end%>
+                             <%= child_record_data = { child_model: rel_obj.get_relation_class, parent_model: cont.class.name, parent_identifier: child_conditions}.to_json %>
+                             <%= rel_obj.get_relation_class %>
+                             <%= rel_obj %>
+                             <%# child_action_tag = get_child_action_tag(rel_obj, rel_obj.get_relation_class).presence %>
+                             <% if action_tag %>
+                                <%= action_tag&.html_safe %>
+                             <% else %>
+                                <%= link_to "Edit #{rel.capitalize}", 
+                                      edit_crud_path(rel_obj, model: rel_obj.get_relation_class, parent_model: cont.class.name, parent_identifier: child_conditions), 
+                                    query: { parent_model: cont.class.name, parent_identifier: child_conditions }  %>  
+                                <%= check_box_tag 'child_record_ids[]', [child_record_data], false, class: "record-checkbox", data: { type: 'child' } %></br></br>
+                             <%end%>                  
+                          <%end%>
+                       </span>
+                    <%end%>
+                </td>
+              <%end%>
             <% @contents.first.class.crud_col_hash.keys.each do |ct|  %>
               <td style="max-width: 200px;overflow: hidden; white-space: normal;text-overflow: ellipsis;">
                 <% skip_relation = cont.class&.skip_relation&.respond_to?(:include?) && cont.class&.skip_relation&.include?(ct) %>
@@ -53,7 +89,7 @@
                 <%end%>
               </td>
             <%end%>
-              
+           
           </tr>
         <% end %>
       <tbody>

@@ -21,12 +21,38 @@ module Crudify
       define_singleton_method(:polymorphic_content) { models }
     end
 
+    def child_relations(*cols)
+      define_singleton_method(:child_relations) { cols }
+    end
+
+    def parent_relations(*cols)
+      define_singleton_method(:parent_relations) { cols }
+    end
+   
+    def is_child_crud(flag=nil)
+      if flag.nil?
+        false
+      else
+        define_singleton_method(:is_child_crud) { flag }
+      end
+    end
+
     def content_identifier(*cols)
       define_singleton_method(:content_identifier) { cols }
     end
     
     def skip_relation(*cols)
       define_singleton_method(:skip_relation) { cols }
+    end
+
+    def get_relation_class(*args, &block)
+      if block_given?
+        # If a block is provided, define the method using that block.
+        define_method(:get_relation_class, &block)
+      else
+        # If no block is provided, define the method to return the argument.
+        define_method(:get_relation_class) { args }
+      end
     end
 
   end

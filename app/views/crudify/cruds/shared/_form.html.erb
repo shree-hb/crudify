@@ -7,5 +7,11 @@
     <%=content_tag_helper(col_name, @content, {attr: attr, datatype: data_type }) %>
   </label>
 <%end%>
+<%= @content.class.is_child_crud  %>
 <%= hidden_field_tag :model, @content.class %>
+<% if @content.class.is_child_crud %>
+    <%= hidden_field_tag :parent_model, @parent_model %>
+    <%= hidden_field_tag :child_relation,  @rel_model %>
+    <%= hidden_field_tag 'parent_identifier[notification_identifier]', params[:parent_identifier][:notification_identifier] %>
+<%end%>
 <%= f.submit %>

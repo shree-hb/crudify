@@ -5,34 +5,49 @@
 <%= render 'crudify/cruds/shared/common' %>
 
 <script type="text/javascript">
-  document.getElementById('deleteLink').addEventListener('click', function(event) {
-    event.preventDefault();
+    document.getElementById('deleteLink').addEventListener('click', function(event) {
+      event.preventDefault();
 
-    var selectedIds = Array.from(document.querySelectorAll('.record-checkbox:checked')).map(cb => cb.value).join(',');
-    var model = document.getElementById('slected_model').value;
+      var parentRecords = [];
+      var childRecords = [];
 
-    if (selectedIds.length === 0) {
-      return alert('Please select records to delete.');
-    }
+      Array.from(document.querySelectorAll('.record-checkbox:checked')).forEach(cb => {
+          if (cb.dataset.type === 'regular') {
+              parentRecords.push(cb.value);
+          } else if (cb.dataset.type === 'child') {
+              childRecords.push(cb.value);
+          }
+      });
 
-    if (!confirm('Are you sure you want to delete the selected records?')) {
-      return;
-    }
+      var model = document.getElementById('slected_model').value;
 
-    // window.location.href = `/delete_content?model=${model}&id=${selectedIds}`;
+      if (parentRecords.length === 0 && childRecords.length === 0) {
+          return alert('Please select records to delete.');
+      }
 
-    fetch(`/crudify/delete_content/?model=${model}&id=${selectedIds}`)
-       .then(response => {
-        if (response.ok) {
-            return response.text();
-        } else {
-            throw new Error('Failed to delete');
-        }
-    })
-    .then(script => {
-        eval(script);
-    })
-    .catch(error => console.error('Error:', error));
+      if (!confirm('Are you sure you want to delete the selected records?')) {
+          return;
+      }
+
+      var url = `/crudify/delete_content/?model=${model}`;
+      if (parentRecords.length > 0) {
+          url += `&parent_records=${encodeURIComponent(parentRecords.join(','))}`;
+      }
+      if (childRecords.length > 0) {
+          url += `&child_records=${encodeURIComponent(childRecords.join(','))}`;
+      }
+
+      fetch(url)
+        .then(response => {
+          if (response.ok) {
+              return response.text();
+          } else {
+              throw new Error('Failed to delete');
+          }
+      })
+      .then(script => {
+          eval(script);
+      })
+      .catch(error => console.error('Error:', error));
   });
-
 </script>
