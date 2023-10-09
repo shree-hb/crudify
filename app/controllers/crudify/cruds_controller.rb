@@ -113,7 +113,8 @@ module Crudify
         parent_model = record_data["parent_model"].constantize
         child_model = record_data["child_model"]
         conditions = record_data["parent_identifier"]
-        obj =  parent_model.where(conditions).first.send(child_model).first
+        t_obj =  parent_model.where(conditions).first.send(child_model)
+        obj = sanitize_reltional_obj(t_obj)
         child_delete_ids << select_attributes(obj,:id) 
       end
 
