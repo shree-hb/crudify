@@ -40,6 +40,7 @@ module Crudify
               select_tg(col_name, form_obj, value, collection1, disabled=false)
             elsif field_type.eql?('enum')
               collection =  obj.class.send("#{col_name}s").keys
+              collection.unshift(["--- Select Empty ---", ""])
               select_tg(col_name, form_obj, value, collection, disabled=false)
             elsif data_type.eql?(:boolean) 
               select_tg(col_name, form_obj, value, [true, false], disabled=false)
