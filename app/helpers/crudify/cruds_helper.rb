@@ -36,6 +36,7 @@ module Crudify
                 relational_model = col_name.to_s.split(/_id$/)[0].capitalize
                 collection1 = relational_model.camelize.constantize.all.collect{|s| [s.send(s.class.relational_display_col), s.id ] } rescue []
               end
+              collection1.unshift(["--- Select Empty ---", ""])
               select_tg(col_name, form_obj, value, collection1, disabled=false)
             elsif field_type.eql?('enum')
               collection =  obj.class.send("#{col_name}s").keys
