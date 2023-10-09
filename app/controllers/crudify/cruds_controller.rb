@@ -45,7 +45,8 @@ module Crudify
   
       if @parent_model
         @rel_model = params[:model]
-        @content = @parent_model.constantize.where(@parent_identifier).first.send(@model)
+        t_content = @parent_model.constantize.where(@parent_identifier).first.send(@model)
+        @content = sanitize_reltional_obj(t_content)
       else 
         @content =  @model_class.find_by_id(params[:id])
       end
@@ -63,7 +64,8 @@ module Crudify
       form_attr = params[@model.underscore.to_sym]
 
       if @parent_model
-        content_obj = @parent_model.constantize.where(@parent_identifier).first.send(@rel_model)
+        t_content =  @parent_model.constantize.where(@parent_identifier).first.send(@rel_model)
+        content_obj = sanitize_reltional_obj(t_content)
       else 
         identifiers = @model_class.content_identifier
         condition = fetch_by_identifier(identifiers, form_attr)
@@ -92,20 +94,6 @@ module Crudify
       redirect_to cruds_path({model: @model})
     end
 
-  #   def delete_content
-  #     binding.pry
-  #     # record_ids = params["id"].split(',')
-  #     # @model = params[:model]
-  #     # ArchiveLog.track_delete_log(record_ids)
-  #     # #{}redirect_to cruds_path({model: @model})
-  #     # flash[:notice] = "Deleted successfully."
-  #     # respond_to do |format|
-  #     #   format.js { render 'delete_content' }
-  #     # end
-  #      # Parsing the JSON strings into Ruby hashes
-      
-  # end
-
     def delete_content
       # Parsing the JSON strings into Ruby hashes
       parent_records = params[:parent_records].present? ? JSON.parse(valid_json_array(params[:parent_records])) : []
@@ -125,7 +113,7 @@ module Crudify
         parent_model = record_data["parent_model"].constantize
         child_model = record_data["child_model"]
         conditions = record_data["parent_identifier"]
-        obj =  parent_model.where(conditions).first.send(child_model)
+        obj =  parent_model.where(conditions).first.send(child_model).first
         child_delete_ids << select_attributes(obj,:id) 
       end
 
@@ -146,6 +134,14 @@ module Crudify
       parent_class = self.class.superclass
       @model_class = parent_class.const_get(@model) rescue Department
     end
+   
+    def sanitize_reltional_obj(obj)
+      if obj.is_a?(ActiveRecord::Base)
+        obj
+      elsif obj.is_a?(ActiveRecord::Relation) || obj.is_a?(Array)
+        obj.first
+      end 
+    end
 
     def valid_json_array(json_str)
       "[#{json_str}]"
@@ -156,8 +152,10 @@ module Crudify
     end
 
     def parent_identifier_params
-      if params[:parent_identifier]
-        params.require(:parent_identifier).permit(:notification_identifier).to_h
+      if params[:parent_identifier].is_a?(ActionController::Parameters)
+        params.require(:parent_identifier).permit!.to_h
+      elsif params[:parent_identifier].is_a?(String)
+        JSON.parse(params[:parent_identifier].gsub("=>", ":"))
       else
         {}
       end

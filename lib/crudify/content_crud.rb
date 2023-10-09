@@ -48,10 +48,12 @@ module Crudify
     def get_relation_class(*args, &block)
       if block_given?
         # If a block is provided, define the method using that block.
-        define_method(:get_relation_class, &block)
+        define_method(:get_relation_class) do |col=nil|
+          instance_exec(col, &block)
+        end
       else
         # If no block is provided, define the method to return the argument.
-        define_method(:get_relation_class) { args }
+        define_method(:get_relation_class) { args.first }
       end
     end
 

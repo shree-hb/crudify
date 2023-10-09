@@ -51,18 +51,21 @@
                 <td>
                     <% @contents.first.class.child_relations.each do |rel|  %>
                        <span style="color:red;">
-                          <% rel_obj = cont.send(rel)  %>
+                           <%t_obj = cont.send(rel)   %>
+                           <% rel_obj = if t_obj.is_a?(ActiveRecord::Base)
+                                                t_obj
+                                              elsif t_obj.is_a?(ActiveRecord::Relation) || t_obj.is_a?(Array)
+                                                t_obj.first
+                                              end %> 
                            <% unless rel_obj.blank? %>
                               <% child_conditions = {} %>
                               <% cont.class.content_identifier.each do |id| %>
                                 <% child_conditions["#{id}"]= cont.send(id)  %>
                               <%end%>
-                             <%= child_record_data = { child_model: rel_obj.get_relation_class, parent_model: cont.class.name, parent_identifier: child_conditions}.to_json %>
-                             <%= rel_obj.get_relation_class %>
-                             <%= rel_obj %>
-                             <%# child_action_tag = get_child_action_tag(rel_obj, rel_obj.get_relation_class).presence %>
-                             <% if action_tag %>
-                                <%= action_tag&.html_safe %>
+                             <% child_record_data = { child_model: rel_obj.get_relation_class, parent_model: cont.class.name, parent_identifier: child_conditions}.to_json %>
+                             <% child_action_tag = get_child_action_tag(rel_obj, rel_obj.get_relation_class).presence %>
+                             <% if child_action_tag || action_tag %>
+                                <%= child_action_tag&.html_safe %>
                              <% else %>
                                 <%= link_to "Edit #{rel.capitalize}", 
                                       edit_crud_path(rel_obj, model: rel_obj.get_relation_class, parent_model: cont.class.name, parent_identifier: child_conditions), 

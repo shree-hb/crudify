@@ -12,6 +12,7 @@
 <% if @content.class.is_child_crud %>
     <%= hidden_field_tag :parent_model, @parent_model %>
     <%= hidden_field_tag :child_relation,  @rel_model %>
-    <%= hidden_field_tag 'parent_identifier[notification_identifier]', params[:parent_identifier][:notification_identifier] %>
+    <%#= hidden_field_tag 'parent_identifier[notification_identifier]', params[:parent_identifier][:notification_identifier] %>
+    <%= hidden_field_tag 'parent_identifier', params[:parent_identifier] %>
 <%end%>
 <%= f.submit %>
