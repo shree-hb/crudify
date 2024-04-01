@@ -23,11 +23,11 @@ In Routes.rb , Add below line
 
 To Generate Initializer, run below rake. This will generate content_engine.rb in the root app's initializer folder.
   
-    $ rake crudify:generate_initializer
+    $ bundle exec rake crudify:generate_initializer
 
 To Generate CRUD for common content models like Resources, Tasks, Email Template etc, use below rake.
 
-    $ rake crudify:crudify_model
+    $ bundle exec rake crudify:crudify_model
 
 To configure model for which CRUD needs to be enabled , run below task (change it with target model name, attribute)
 
