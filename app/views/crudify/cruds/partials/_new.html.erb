@@ -1,0 +1,9 @@
+<div class="form-style-2-heading">Update <%= @content.class %>  </div>
+<%= link_to 'Go Back to Content List', cruds_path(model: @content.class) %>
+
+
+<div class="form-style-2">
+  <%= form_with model: @content, url: "/crudify/cruds",  method: :post do |f| %>
+    <%= render "crudify/cruds/shared/form", content: @content, f: f %>
+  <% end %>
+</div>

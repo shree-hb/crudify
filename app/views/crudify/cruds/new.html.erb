@@ -1,9 +1,5 @@
-<div class="form-style-2-heading">Update <%= @content.class %>  </div>  
-<%= link_to 'Go Back to Content List', cruds_path(model: @content.class) %>
+<% content_for :dynamic_view do %>
+  <%= render 'crudify/cruds/partials/new' %>
+<% end %>
 
-
-<div class="form-style-2">
-  <%= form_with model: @content, url: "/crudify/cruds",  method: :post do |f| %> 
-    <%= render "form", content: @content, f: f %>
-  <% end %>
-</div>
+<%= render 'crudify/cruds/shared/common' %>
